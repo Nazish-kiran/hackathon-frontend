@@ -1,5 +1,6 @@
 import { ThemeProvider } from "./Components/ThemeToggler.jsx";
-import ThemeToggler from "./Components/ThemeToggler.jsx";
+import UserContext from "./Context/UserContext.jsx";
+
 import "./globals.css";
 
 export const metadata = {
@@ -16,9 +17,11 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning={true}
       >
         <ThemeProvider>
-          {" "}
-          {/* <ThemeToggler /> */}
-          {children}
+          <UserContext>
+            {" "}
+            {/* <ThemeToggler /> */}
+            {children}
+          </UserContext>
         </ThemeProvider>
       </body>
     </html>
