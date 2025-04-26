@@ -1,7 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { UserDataContext } from "../Context/UserContext.jsx";
 
 export default function page() {
   const [theme, setTheme] = useState("light");
@@ -9,6 +12,9 @@ export default function page() {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+
+  const { User, setUser } = React.useContext(UserDataContext);
+  const router = useRouter();
 
   useEffect(() => {
     if (theme === "dark") {
@@ -22,9 +28,36 @@ export default function page() {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ email, password });
+    const newUser = {
+      email: email,
+      password: password,
+      firstname: firstName,
+      lastname: lastName,
+    };
+
+    console.log("Sending user:", newUser);
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/users/register`,
+        newUser
+      );
+
+      if (response.status === 201) {
+        const data = response.data;
+        setUser(data.user);
+        localStorage.setItem("token", data.token);
+        console.log("User registered:", response.data.user);
+        router.push("/Home");
+      }
+      setEmail("");
+      setPassword("");
+      setFirstName("");
+      setLastName("");
+    } catch (error) {
+      console.log("Error during registration:", error.response?.data || error);
+    }
   };
 
   return (
