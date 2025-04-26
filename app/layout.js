@@ -1,5 +1,6 @@
 import { ThemeProvider } from "./Components/ThemeToggler.jsx";
 import UserContext from "./Context/UserContext.jsx";
+import { Analytics } from "@vercel/analytics/react"
 
 import "./globals.css";
 
