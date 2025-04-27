@@ -28,11 +28,15 @@ const page = () => {
 
   // Fetch tasks using axios
   const fetchTasks = async () => {
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1"
-    );
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.log("No token found");
+      return;
+    }
+    console.log("Token from localStorage: ", token);
     console.log(`${process.env.NEXT_PUBLIC_API_URL}/users/profile`);
+    console.log(`Bearer ${token}`);
+    
     try {
       const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/profile`,{
         headers: {
@@ -100,8 +104,8 @@ const page = () => {
     <>
       <ProtectedUser>
         <div className="absolute top-4 right-4">
-        </div>
           <ThemeToggler />
+        </div>
           <div className=" min-h-screen p-8">
             <div className="max-w-4xl mx-auto">
               {/* Header */}
