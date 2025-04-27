@@ -48,8 +48,8 @@ export const TasksProvider = ({ children }) => {
   const getTasks = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${serverUrl}/tasks`);
-
+      const response = await axios.get(`${serverUrl}/tasks`, { withCredentials: true }); // 🔥 added here
+  
       setTasks(response.data.tasks);
     } catch (error) {
       console.log("Error getting tasks", error);

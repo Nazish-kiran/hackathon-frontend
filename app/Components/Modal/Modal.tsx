@@ -1,7 +1,6 @@
 "use client";
 import { useTasks } from "@/context/taskContext";
-import useDetectOutside from "@/hooks/useDetectOutside";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 function Modal() {
   const {
@@ -14,17 +13,31 @@ function Modal() {
     activeTask,
     updateTask,
   } = useTasks();
-  const ref = React.useRef(null);
 
-  // Use the hook to detect clicks outside the modal
-  useDetectOutside({
-    ref,
-    callback: () => {
-      if (isEditing) {
-        closeModal(); // Close modal if it is in add/edit mode
+  // Track whether the modal is mounted
+  const [isModalOpen, setIsModalOpen] = useState(true);
+
+  // Handle clicks outside the modal directly using mouse events
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // Check if the event.target is inside the modal content or not
+      const modalContent = document.querySelector(".modal-content");
+      if (modalContent && !modalContent.contains(event.target as Node)) {
+        // If outside, close the modal
+        if (isEditing) {
+          closeModal();
+        }
       }
-    },
-  });
+    };
+
+    // Add the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isEditing, closeModal]);
 
   useEffect(() => {
     if (modalMode === "edit" && activeTask) {
@@ -34,6 +47,11 @@ function Modal() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!task.title || !task.description) {
+      alert("Please fill in all required fields.");
+      return;
+    }
 
     if (modalMode === "edit") {
       updateTask(task);
@@ -46,10 +64,8 @@ function Modal() {
   return (
     <div className="fixed left-0 top-0 z-50 h-full w-full bg-[#333]/30 overflow-hidden">
       <form
-        action=""
-        className="py-5 px-6 max-w-[520px] w-full flex flex-col gap-3 bg-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-md"
+        className="modal-content py-5 px-6 max-w-[520px] w-full flex flex-col gap-3 bg-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-md"
         onSubmit={handleSubmit}
-        ref={ref}
       >
         <div className="flex flex-col gap-1">
           <label htmlFor="title">Title</label>
@@ -59,8 +75,9 @@ function Modal() {
             id="title"
             placeholder="Task Title"
             name="title"
-            value={task.title}
+            value={task.title? task.title : ""}
             onChange={(e) => handleInput("title")(e)}
+            required
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -72,6 +89,7 @@ function Modal() {
             rows={4}
             value={task.description}
             onChange={(e) => handleInput("description")(e)}
+            required
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -93,7 +111,7 @@ function Modal() {
             className="bg-[#F9F9F9] p-2 rounded-md border"
             type="date"
             name="dueDate"
-            value={task.dueDate}
+            value={task.dueDate? task.dueDate : ""}
             onChange={(e) => handleInput("dueDate")(e)}
           />
         </div>
@@ -118,9 +136,7 @@ function Modal() {
         <div className="mt-8">
           <button
             type="submit"
-            className={`text-white py-2 rounded-md w-full hover:bg-blue-500 transition duration-200 ease-in-out ${
-              modalMode === "edit" ? "bg-blue-400" : "bg-green-400"
-            }`}
+            className={`text-white py-2 rounded-md w-full hover:bg-blue-500 transition duration-200 ease-in-out ${modalMode === "edit" ? "bg-blue-400" : "bg-green-400"}`}
           >
             {modalMode === "edit" ? "Update Task" : "Create Task"}
           </button>

@@ -50,7 +50,7 @@ export const UserContextProvider = ({ children }) => {
       router.push("/login");
     } catch (error) {
       console.log("Error registering user", error);
-      toast.error(error.response.data.message);
+      // toast.error(error.response.data.message);
     }
   };
 
@@ -85,7 +85,7 @@ export const UserContextProvider = ({ children }) => {
     } catch (error) {
       console.log("Error logging in user", error);
       console.log(error.response);
-      toast.error(error.response.data.message);
+      // toast.error(error.response.data.message);
     }
   };
 
@@ -126,7 +126,7 @@ export const UserContextProvider = ({ children }) => {
       router.push("/login");
     } catch (error) {
       console.log("Error logging out user", error);
-      toast.error(error.response.data.message);
+      // toast.error(error.response.data.message);
     }
   };
 
