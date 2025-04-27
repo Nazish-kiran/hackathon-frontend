@@ -28,9 +28,17 @@ const page = () => {
 
   // Fetch tasks using axios
   const fetchTasks = async () => {
+    const token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
     console.log(`${process.env.NEXT_PUBLIC_API_URL}/users/profile`);
     try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/profile`);
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/profile`,{
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       
       setTasks(res.data);
     } catch (error) {
