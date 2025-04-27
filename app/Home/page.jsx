@@ -35,12 +35,12 @@ const page = () => {
     }
     console.log("Token from localStorage: ", token);
     console.log(`${process.env.NEXT_PUBLIC_API_URL}/users/profile`);
-    console.log(`Bearer ${token}`);
+    console.log(`${token}`);
     
     try {
       const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/profile`,{
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: token
         }
       });
       
