@@ -28,8 +28,10 @@ const page = () => {
 
   // Fetch tasks using axios
   const fetchTasks = async () => {
+    console.log(`${process.env.NEXT_PUBLIC_API_URL}/users/profile`);
     try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/tasks`);
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/profile`);
+      
       setTasks(res.data);
     } catch (error) {
       console.error("Error fetching tasks:", error);
@@ -40,7 +42,7 @@ const page = () => {
   const createTask = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/tasks`, formData);
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/profile`, formData);
       setShowModal(false);
       setFormData({ title: "", description: "", user: "", status: "To Do" });
       fetchTasks();
@@ -52,7 +54,7 @@ const page = () => {
   // Delete task using axios
   const deleteTask = async (id) => {
     try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/tasks?id=${id}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/users/profile?id=${id}`);
       fetchTasks();
     } catch (error) {
       console.error("Error deleting task:", error);
@@ -64,7 +66,7 @@ const page = () => {
     e.preventDefault();
     try {
       await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/tasks/${currentTaskId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users/profile/${currentTaskId}`,
         editFormData
       );
       setShowEditModal(false);
