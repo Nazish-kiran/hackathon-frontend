@@ -12,12 +12,23 @@
     "@heroicons/react": "^2.2.0",
     "@vercel/analytics": "^1.5.0",
     "axios": "^1.9.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.9.2",
+    "lucide-react": "^0.503.0",
+    "moment": "^2.30.1",
     "next": "15.3.1",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-gtm-module": "^2.0.11",
+    "react-hot-toast": "^2.5.2",
+    "recharts": "^2.15.3",
+    "tailwind-merge": "^3.2.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/react": "19.1.2",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.4"
