@@ -9,7 +9,7 @@ const UserContext = React.createContext();
 axios.defaults.withCredentials = true;
 
 export const UserContextProvider = ({ children }) => {
-  const serverUrl = "http://localhost:9009"; // replace with your server URL
+  const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000"; // Update this to your server URL
 
   const router = useRouter();
 
@@ -74,7 +74,7 @@ export const UserContextProvider = ({ children }) => {
       // clear the form
       setUserState({
         email: "",
-        password: "",
+        password: "", 
       });
 
       // refresh the user details
